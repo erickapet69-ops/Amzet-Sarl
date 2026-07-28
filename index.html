@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMZET SARL — Transit · Transport · Dédouanement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#101d2e;
+    --navy-deep:#0a1420;
+    --paper:#efe8d8;
+    --paper-dim:#e2d9c2;
+    --rust:#c67a2e;
+    --cargo-red:#a12c26;
+    --ink:#1c2530;
+    --muted:#5b6472;
+    --line: rgba(239,232,216,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  a{color:inherit;}
+  .display{font-family:'Big Shoulders Display', sans-serif; text-transform:uppercase; letter-spacing:0.01em;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 5vw;
+    background:rgba(16,29,46,0.92);
+    backdrop-filter:blur(6px);
+    color:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-mark{display:flex; align-items:center; gap:10px; font-family:'Big Shoulders Display'; font-weight:800; font-size:22px; letter-spacing:0.03em;}
+  .nav-mark .dot{width:9px; height:9px; background:var(--rust); border-radius:50%; flex:none;}
+  .nav-links{display:flex; gap:32px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;}
+  .nav-links a{text-decoration:none; opacity:0.75; transition:opacity 0.2s;}
+  .nav-links a:hover, .nav-links a:focus-visible{opacity:1;}
+  .nav-call{
+    font-family:'IBM Plex Mono'; font-size:13px; border:1px solid var(--line);
+    padding:8px 14px; border-radius:2px; text-decoration:none; white-space:nowrap;
+  }
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    background:
+      radial-gradient(ellipse at 80% 0%, rgba(198,122,46,0.16), transparent 55%),
+      linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color:var(--paper);
+    padding:150px 5vw 100px;
+    min-height:92vh;
+    display:flex; flex-direction:column; justify-content:center;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:absolute; inset:0; opacity:0.06;
+    background-image:linear-gradient(var(--paper) 1px, transparent 1px), linear-gradient(90deg, var(--paper) 1px, transparent 1px);
+    background-size:64px 64px;
+    pointer-events:none;
+  }
+  .eyebrow-row{display:flex; align-items:center; gap:14px; margin-bottom:26px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--rust); border:1px solid rgba(198,122,46,0.5); padding:6px 12px; border-radius:2px;
+  }
+  .eyebrow-rule{flex:1; height:1px; background:var(--line); max-width:200px;}
+  h1.hero-title{
+    font-family:'Big Shoulders Display';
+    font-size:clamp(56px, 10vw, 130px);
+    line-height:0.92;
+    font-weight:900;
+    max-width:14ch;
+  }
+  h1.hero-title em{font-style:normal; color:var(--rust);}
+  .hero-sub{
+    margin-top:28px; max-width:540px; font-size:18px; line-height:1.6; color:#cfd3d9;
+  }
+  .hero-cta-row{display:flex; flex-wrap:wrap; gap:16px; margin-top:44px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono'; font-size:14px; letter-spacing:0.03em;
+    padding:15px 26px; border-radius:2px; text-decoration:none; cursor:pointer;
+    transition:transform 0.18s ease, background 0.18s ease;
+  }
+  .btn-primary{background:var(--rust); color:var(--navy-deep); font-weight:600;}
+  .btn-primary:hover{transform:translateY(-2px); background:#d4903f;}
+  .btn-ghost{border:1px solid var(--line); color:var(--paper);}
+  .btn-ghost:hover{transform:translateY(-2px); border-color:var(--rust);}
+
+  /* waybill stamp card */
+  .waybill{
+    position:absolute; right:5vw; top:150px;
+    width:270px; background:var(--paper); color:var(--ink);
+    border:1px solid #cfc4a4; padding:20px 22px;
+    font-family:'IBM Plex Mono'; font-size:12px; line-height:1.9;
+    box-shadow:0 24px 50px rgba(0,0,0,0.35);
+    transform:rotate(2.5deg);
+  }
+  .waybill .wb-head{display:flex; justify-content:space-between; border-bottom:1px dashed #b6a97f; padding-bottom:8px; margin-bottom:10px; letter-spacing:0.08em; text-transform:uppercase; font-size:10px; color:var(--muted);}
+  .waybill .wb-row{display:flex; justify-content:space-between; gap:14px;}
+  .waybill .wb-row span:first-child{color:var(--muted);}
+  .stamp{
+    position:absolute; bottom:-14px; right:-10px;
+    width:104px; height:104px; border:3px solid var(--cargo-red); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    color:var(--cargo-red); font-family:'Big Shoulders Display'; font-weight:800;
+    font-size:13px; line-height:1.15; letter-spacing:0.04em; transform:rotate(-14deg);
+    background:rgba(161,44,38,0.04);
+  }
+  @media (max-width:980px){ .waybill{display:none;} }
+
+  /* ---------- MARQUEE STRIP ---------- */
+  .strip{
+    background:var(--rust); color:var(--navy-deep);
+    overflow:hidden; white-space:nowrap; border-bottom:1px solid var(--line);
+  }
+  .strip-track{display:inline-block; padding:12px 0; animation:scroll-left 26s linear infinite;}
+  .strip-track span{font-family:'IBM Plex Mono'; font-size:13px; letter-spacing:0.1em; margin:0 26px; text-transform:uppercase; font-weight:500;}
+  @keyframes scroll-left{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- SECTIONS shared ---------- */
+  section{padding:120px 5vw;}
+  .section-head{max-width:640px; margin-bottom:64px;}
+  .section-eyebrow{font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--rust); margin-bottom:16px;}
+  .section-title{font-size:clamp(34px,5vw,56px); font-weight:800; line-height:1.02;}
+  .section-desc{margin-top:18px; font-size:16px; color:var(--muted); line-height:1.7; max-width:52ch;}
+
+  /* ---------- SERVICES ---------- */
+  .services{background:var(--paper);}
+  .service-list{border-top:1px solid #cfc4a4;}
+  .service-row{
+    display:grid; grid-template-columns:90px 1fr 1.2fr; gap:32px; align-items:start;
+    padding:38px 0; border-bottom:1px solid #cfc4a4;
+    transition:background 0.2s ease;
+  }
+  .service-row:hover{background:rgba(198,122,46,0.06);}
+  .service-num{font-family:'IBM Plex Mono'; font-size:14px; color:var(--rust); padding-top:6px;}
+  .service-name{font-family:'Big Shoulders Display'; font-weight:800; font-size:clamp(24px,3vw,36px); text-transform:uppercase; letter-spacing:0.01em;}
+  .service-desc{color:var(--muted); font-size:15px; line-height:1.7; padding-top:8px;}
+  @media (max-width:720px){ .service-row{grid-template-columns:1fr; gap:8px;} .service-num{padding-top:0;} }
+
+  /* ---------- CORRIDOR / ROUTE (signature element) ---------- */
+  .corridor{background:var(--navy); color:var(--paper); position:relative;}
+  .route-wrap{margin-top:80px; position:relative; padding:40px 0 70px;}
+  .route-line{
+    position:relative; height:2px; background:var(--line);
+    background-image:linear-gradient(90deg, rgba(239,232,216,0.4) 0 10px, transparent 10px 20px);
+    background-size:20px 2px;
+  }
+  .route-line::before{
+    content:''; position:absolute; left:0; top:-3px; height:8px; width:8px; background:var(--rust); border-radius:50%;
+  }
+  .route-line::after{
+    content:''; position:absolute; right:0; top:-3px; height:8px; width:8px; background:var(--rust); border-radius:50%;
+  }
+  .route-stops{display:flex; justify-content:space-between; margin-top:-2px;}
+  .stop{position:relative; text-align:center; width:33%;}
+  .stop-dot{width:12px; height:12px; border-radius:50%; background:var(--navy); border:2px solid var(--rust); margin:0 auto; transform:translateY(-7px);}
+  .stop-label{margin-top:14px; font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#cfd3d9;}
+  .stop-sub{font-size:11px; color:var(--muted); margin-top:4px;}
+  .route-mover{
+    position:absolute; top:-13px; left:0;
+    font-size:20px; animation:move-route 7s ease-in-out infinite;
+  }
+  @keyframes move-route{
+    0%{left:0%; opacity:0;} 8%{opacity:1;} 92%{opacity:1;} 100%{left:96%; opacity:0;}
+  }
+  .corridor-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:40px; margin-top:70px;}
+  .corridor-col{border-top:1px solid var(--line); padding-top:20px;}
+  .corridor-col h4{font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--rust); margin-bottom:12px;}
+  .corridor-col p{font-size:14px; color:#cfd3d9; line-height:1.7;}
+  @media (max-width:760px){ .corridor-cols{grid-template-columns:1fr;} .stop-label{font-size:10px;} }
+
+  /* ---------- SECTORS ---------- */
+  .sectors{background:var(--paper);}
+  .sector-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:#cfc4a4; border:1px solid #cfc4a4; margin-top:20px;}
+  .sector-card{background:var(--paper); padding:34px 24px; min-height:150px; display:flex; flex-direction:column; justify-content:space-between;}
+  .sector-card .tag{font-family:'IBM Plex Mono'; font-size:11px; color:var(--rust); letter-spacing:0.08em; text-transform:uppercase;}
+  .sector-card .name{font-family:'Big Shoulders Display'; font-weight:700; font-size:20px; text-transform:uppercase; margin-top:14px;}
+  @media (max-width:820px){ .sector-grid{grid-template-columns:repeat(2,1fr);} }
+
+   /* ---------- PDG ---------- */
+  .pdg{background:var(--paper); position:relative;}
+  .pdg-grid{display:grid; grid-template-columns:0.78fr 1.22fr; gap:70px; align-items:start; margin-top:60px;}
+  .pdg-photo-wrap{position:relative;}
+  .pdg-photo{
+    width:100%; aspect-ratio:3/4; object-fit:cover; object-position:50% 20%;
+    border:1px solid #cfc4a4; filter:grayscale(0.15) contrast(1.05);
+  }
+  
+  .pdg-badge{
+    margin-top:22px;
+    text-align:center;
+}
+  .pdg-badge .name{font-family:'Big Shoulders Display'; font-weight:800; font-size:26px; text-transform:uppercase; line-height:1.1; color:var(--navy);}
+  .pdg-badge .role{font-family:'IBM Plex Mono'; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--rust); margin-top:8px;}
+  .pdg-stats{display:flex; gap:0; margin-top:38px; border-top:1px solid #cfc4a4;}
+  .pdg-stat{flex:1; padding:20px 0 0; border-right:1px solid #cfc4a4; text-align:center;}
+  .pdg-stat:last-child{border-right:none;}
+  .pdg-stat .num{font-family:'Big Shoulders Display'; font-weight:900; font-size:38px; color:var(--rust); line-height:1;}
+  .pdg-stat .lbl{font-family:'IBM Plex Mono'; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-top:6px;}
+ 
+  .pdg-body p{font-size:16px; line-height:1.85; color:var(--ink); margin-bottom:20px; max-width:56ch;}
+  .pdg-body p:first-of-type{font-size:19px; font-weight:500;}
+  .pdg-quote{
+    border-left:3px solid var(--rust); padding-left:22px; margin:36px 0;
+    font-family:'Big Shoulders Display'; font-weight:700; font-size:26px; text-transform:none; line-height:1.25;
+    color:var(--navy); max-width:44ch;
+  }
+  .pdg-principles{display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:36px; border-top:1px solid #cfc4a4;}
+  .pdg-principle{padding:20px 0 20px 0; border-bottom:1px solid #cfc4a4;}
+  .pdg-principle:nth-child(odd){padding-right:24px; border-right:1px solid #cfc4a4;}
+  .pdg-principle:nth-child(even){padding-left:24px;}
+  .pdg-principle h4{font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--rust); margin-bottom:8px;}
+  .pdg-principle p{font-size:14px; color:var(--muted); line-height:1.65; margin:0; max-width:none;}
+  @media (max-width:880px){
+    .pdg-grid{grid-template-columns:1fr; gap:44px;}
+    .pdg-principles{grid-template-columns:1fr;}
+    .pdg-principle:nth-child(odd){border-right:none; padding-right:0;}
+    .pdg-principle:nth-child(even){padding-left:0;}
+  }
+
+  /* ---------- TEMOIGNAGES ---------- */
+.temoignages{background:var(--navy); color:var(--paper);}
+.temoignages .section-title{color:var(--paper);}
+.temoignages .section-desc{color:#cfd3d9;}
+.placeholder-flag{
+  display:inline-flex; align-items:center; gap:8px; margin-top:18px;
+  font-family:'IBM Plex Mono'; font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--rust); border:1px dashed rgba(198,122,46,0.5); padding:8px 12px; border-radius:2px;
+}
+.temoignage-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); margin-top:56px; border:1px solid var(--line);}
+.temoignage-card{background:var(--navy-deep); padding:34px 28px; display:flex; flex-direction:column; justify-content:space-between; min-height:260px;}
+.temoignage-mark{font-family:'Big Shoulders Display'; font-size:44px; color:var(--rust); line-height:1; margin-bottom:6px;}
+.temoignage-quote{font-size:15px; line-height:1.75; color:#e2e5e9; font-style:italic;}
+.temoignage-who{margin-top:24px; padding-top:16px; border-top:1px solid var(--line);}
+.temoignage-name{font-family:'IBM Plex Mono'; font-size:13px; color:var(--paper);}
+.temoignage-role{font-family:'IBM Plex Mono'; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-top:3px;}
+@media (max-width:820px){ .temoignage-grid{grid-template-columns:1fr;} }
+
+/* ---------- FAQ ---------- */
+.faq{background:var(--paper);}
+.faq-list{border-top:1px solid #cfc4a4; margin-top:56px;}
+.faq-item{border-bottom:1px solid #cfc4a4;}
+.faq-item summary{
+  list-style:none; cursor:pointer; padding:26px 0; display:flex; align-items:center; justify-content:space-between; gap:20px;
+}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-q{font-family:'Big Shoulders Display'; font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:0.01em;}
+.faq-icon{
+  flex:none; width:26px; height:26px; border:1px solid var(--rust); border-radius:50%;
+  position:relative; transition:transform 0.25s ease;
+}
+.faq-icon::before, .faq-icon::after{
+  content:''; position:absolute; background:var(--rust); top:50%; left:50%; transform:translate(-50%,-50%);
+}
+.faq-icon::before{width:10px; height:1.5px;}
+.faq-icon::after{width:1.5px; height:10px; transition:opacity 0.2s ease;}
+.faq-item[open] .faq-icon::after{opacity:0;}
+.faq-item[open] .faq-icon{transform:rotate(180deg);}
+.faq-a{padding:0 0 28px; max-width:64ch; font-size:15px; line-height:1.75; color:var(--muted);}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--navy-deep); color:var(--paper); border-top:1px solid var(--line);}
+  .contact-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; margin-top:60px;}
+  .contact-card{border:1px solid var(--line); padding:34px; border-radius:2px;}
+  .contact-line{display:flex; justify-content:space-between; align-items:baseline; padding:18px 0; border-bottom:1px solid var(--line); font-family:'IBM Plex Mono'; font-size:14px;}
+  .contact-line:last-child{border-bottom:none;}
+  .contact-line span:first-child{color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-size:11px;}
+  .contact-line a{text-decoration:none; color:var(--paper); font-size:16px;}
+  .contact-line a:hover{color:var(--rust);}
+  .contact-note{font-size:14px; color:#cfd3d9; line-height:1.8;}
+  .contact-note strong{color:var(--paper); display:block; font-family:'Big Shoulders Display'; font-size:20px; text-transform:uppercase; margin-bottom:10px;}
+  @media (max-width:760px){ .contact-grid{grid-template-columns:1fr;} }
+
+  footer{
+    background:var(--navy-deep); color:var(--muted); text-align:center;
+    padding:26px 5vw; font-family:'IBM Plex Mono'; font-size:12px; border-top:1px solid var(--line);
+  }
+
+  /* ================================================================
+     BASCULE DE LANGUE FRANÇAIS / ARABE
+     Aucune règle ci-dessus n'est modifiée. Tout ce qui suit ne s'applique
+     que lorsque html[dir="rtl"] est actif (mode arabe).
+     ================================================================ */
+  .lang-switch{
+    display:flex; align-items:center; gap:2px; border:1px solid var(--line); border-radius:2px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; overflow:hidden; flex:none; margin-inline-start:16px;
+  }
+  .lang-switch button{
+    background:transparent; border:none; color:var(--paper); opacity:0.55;
+    padding:8px 12px; cursor:pointer; font-family:inherit; font-size:12px; letter-spacing:0.04em;
+    transition:opacity 0.2s ease, background 0.2s ease;
+  }
+  .lang-switch button.active{opacity:1; background:var(--rust); color:var(--navy-deep); font-weight:600;}
+  .lang-switch button:hover{opacity:1;}
+
+  html[dir="rtl"] body,
+  html[dir="rtl"] .contact-line,
+  html[dir="rtl"] footer{ font-family:'IBM Plex Sans Arabic', sans-serif; }
+
+  html[dir="rtl"] .mono,
+  html[dir="rtl"] .nav-call,
+  html[dir="rtl"] .eyebrow,
+  html[dir="rtl"] .waybill,
+  html[dir="rtl"] .strip-track span,
+  html[dir="rtl"] .section-eyebrow,
+  html[dir="rtl"] .service-num,
+  html[dir="rtl"] .stop-label,
+  html[dir="rtl"] .corridor-col h4,
+  html[dir="rtl"] .sector-card .tag,
+  html[dir="rtl"] .pdg-badge .role,
+  html[dir="rtl"] .pdg-stat .lbl,
+  html[dir="rtl"] .pdg-principle h4,
+  html[dir="rtl"] .temoignage-name,
+  html[dir="rtl"] .temoignage-role,
+  html[dir="rtl"] .btn{
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    letter-spacing:0 !important;
+    text-transform:none !important;
+  }
+
+  html[dir="rtl"] .display,
+  html[dir="rtl"] h1.hero-title,
+  html[dir="rtl"] .service-name,
+  html[dir="rtl"] .sector-card .name,
+  html[dir="rtl"] .pdg-badge .name,
+  html[dir="rtl"] .pdg-quote,
+  html[dir="rtl"] .contact-note strong,
+  html[dir="rtl"] .stamp,
+  html[dir="rtl"] .faq-q,
+  html[dir="rtl"] .temoignage-mark{
+    font-family:'Noto Kufi Arabic', sans-serif;
+    letter-spacing:0 !important;
+    text-transform:none !important;
+  }
+
+  html[dir="rtl"] .waybill{ right:auto; left:5vw; transform:rotate(-2.5deg); }
+  html[dir="rtl"] .stamp{ right:auto; left:-10px; }
+  html[dir="rtl"] .route-line::before{ left:auto; right:0; }
+  html[dir="rtl"] .route-line::after{ right:auto; left:0; }
+  html[dir="rtl"] .route-mover{ left:auto; right:0; animation-name:move-route-rtl; transform:scaleX(-1); }
+  @keyframes move-route-rtl{
+    0%{right:0%; opacity:0;} 8%{opacity:1;} 92%{opacity:1;} 100%{right:96%; opacity:0;}
+  }
+  html[dir="rtl"] .pdg-quote{
+    border-left:none; border-right:3px solid var(--rust);
+    padding-left:0; padding-right:22px;
+  }
+  html[dir="rtl"] .pdg-principle:nth-child(odd){
+    padding-right:0; border-right:none;
+    padding-left:24px; border-left:1px solid #cfc4a4;
+  }
+  html[dir="rtl"] .pdg-principle:nth-child(even){ padding-left:0; padding-right:24px; }
+  @media (max-width:880px){
+    html[dir="rtl"] .pdg-principle:nth-child(odd){ border-left:none; padding-left:0; }
+    html[dir="rtl"] .pdg-principle:nth-child(even){ padding-right:0; }
+  }
+
+  /* ================================================================
+     Bouton WhatsApp flottant, formulaire de contact,
+     et fusion Témoignages + Avis clients
+     ================================================================ */
+  .wa-float{
+    position:fixed; bottom:24px; inset-inline-end:24px; z-index:60;
+    width:60px; height:60px; border-radius:50%; background:#25D366;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
+    text-decoration:none; transition:transform 0.2s ease;
+  }
+  .wa-float:hover{ transform:scale(1.08); }
+  .wa-float svg{ width:30px; height:30px; fill:#fff; }
+  .wa-ring{
+    position:fixed; bottom:24px; inset-inline-end:24px; z-index:59;
+    width:60px; height:60px; border-radius:50%;
+    border:2px solid #25D366; opacity:0.6; pointer-events:none;
+    animation:wa-pulse 2.2s ease-out infinite;
+  }
+  @keyframes wa-pulse{ 0%{transform:scale(1); opacity:0.6;} 100%{transform:scale(1.6); opacity:0;} }
+
+  /* Formulaire de contact */
+  .contact-form-card{
+    margin-top:40px; border:1px solid var(--line); padding:34px; border-radius:2px;
+  }
+  .contact-form-card h3{ font-family:'Big Shoulders Display'; font-size:22px; text-transform:uppercase; color:var(--paper); margin-bottom:8px; letter-spacing:0.01em; }
+  .form-hint{ font-size:13px; color:var(--muted); margin-bottom:24px; line-height:1.6; }
+  .form-field{ margin-bottom:18px; }
+  .form-field label{ display:block; font-family:'IBM Plex Mono'; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+  .form-field input, .form-field textarea{
+    width:100%; background:transparent; border:1px solid var(--line); color:var(--paper);
+    padding:12px 14px; font-family:'IBM Plex Sans'; font-size:14px; border-radius:2px; resize:vertical;
+  }
+  .form-field input:focus, .form-field textarea:focus{ outline:none; border-color:var(--rust); }
+  .form-actions{ display:flex; flex-wrap:wrap; gap:14px; margin-top:8px; }
+  .btn-wa{ background:#25D366; color:#0a1420; border:none; font-weight:600; }
+  .btn-wa:hover{ background:#2fe077; transform:translateY(-2px); }
+
+  /* Avis fusionnés dans Témoignages */
+  .avis-summary{ display:flex; align-items:center; gap:20px; margin-top:36px; }
+  .avis-average-num{ font-family:'Big Shoulders Display'; font-size:48px; font-weight:900; color:var(--rust); line-height:1; }
+  .avis-average-meta{ font-family:'IBM Plex Mono'; font-size:12px; color:#cfd3d9; margin-top:4px; }
+  .stars{ display:inline-flex; gap:2px; color:var(--rust); font-size:18px; }
+  .stars.small{ font-size:14px; margin-bottom:6px; }
+
+  .avis-form{ margin-top:56px; border-top:1px solid var(--line); padding-top:48px; max-width:480px; }
+  .avis-form h3{ font-family:'Big Shoulders Display'; font-size:24px; text-transform:uppercase; margin-bottom:22px; letter-spacing:0.01em; color:var(--paper); }
+  .star-input{ display:inline-flex; gap:6px; font-size:28px; cursor:pointer; }
+  .star-input .star{ color:#4a5568; transition:color 0.15s ease; }
+  .star-input .star.filled{ color:var(--rust); }
+
+  html[dir="rtl"] .contact-form-card h3,
+  html[dir="rtl"] .avis-form h3{ font-family:'Noto Kufi Arabic', sans-serif; letter-spacing:0 !important; text-transform:none !important; }
+  html[dir="rtl"] .form-field label,
+  html[dir="rtl"] .avis-average-meta,
+  html[dir="rtl"] .form-hint{ font-family:'IBM Plex Sans Arabic', sans-serif; letter-spacing:0 !important; text-transform:none !important; }
+  html[dir="rtl"] .form-field input, html[dir="rtl"] .form-field textarea{ font-family:'IBM Plex Sans Arabic', sans-serif; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-mark"><span class="dot"></span>AMZET SARL</div>
+  <div class="nav-links">
+    <a href="#services" data-i18n="nav-services">Services</a>
+    <a href="#corridor" data-i18n="nav-corridor">Corridor</a>
+    <a href="#secteurs" data-i18n="nav-secteurs">Secteurs</a>
+    <a href="#pdg" data-i18n="nav-pdg">Le PDG de l'entreprise</a>
+    <a href="#temoignages" data-i18n="nav-temoignages">Témoignages</a>
+    <a href="#faq" data-i18n="nav-faq">FAQ</a>
+    <a href="#contact" data-i18n="nav-contact">Contacts</a>
+  </div>
+  <div class="lang-switch">
+    <button type="button" id="btn-fr" class="active" onclick="setLang('fr')">FR</button>
+    <button type="button" id="btn-ar" onclick="setLang('ar')">عربي</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-grid"></div>
+  <div class="eyebrow-row">
+    <span class="eyebrow" data-i18n="hero-eyebrow">Cameroun — Tchad</span>
+    <span class="eyebrow-rule"></span>
+  </div>
+  <h1 class="hero-title" data-i18n-html="hero-title">Votre fret,<br><em>dédouané</em><br>sans détour.</h1>
+  <p class="hero-sub" data-i18n="hero-sub1">AMZET SARL organise le transit, le transport et le dédouanement de vos marchandises entre le Port Autonome de Douala et la République du Tchad jusqu'à votre entrepôt.</p>
+  <p class="hero-sub" data-i18n="hero-sub2">La Fiabilité et la Sécurité de votre marchandise est notre Priorité...</p>
+  <div class="hero-cta-row">
+    <a class="btn btn-primary" href="tel:+237691341211" data-i18n="hero-cta1">Appeler l'agence →</a>
+    <a class="btn btn-ghost" href="#services" data-i18n="hero-cta2">Voir nos services</a>
+  </div>
+
+  <div class="waybill">
+    <div class="wb-head"><span data-i18n="wb-title">Bordereau</span><span>N° AMZ-001</span></div>
+    <div class="wb-row"><span data-i18n="wb-transit">Transit</span><span data-i18n="wb-actif1">Actif</span></div>
+    <div class="wb-row"><span data-i18n="wb-transport">Transport</span><span data-i18n="wb-actif2">Actif</span></div>
+    <div class="wb-row"><span data-i18n="wb-dedou">Dédouanement</span><span data-i18n="wb-actif3">Actif</span></div>
+    <div class="wb-row"><span data-i18n="wb-impexp">Import / Export</span><span data-i18n="wb-actif4">Actif</span></div>
+    <div class="stamp" data-i18n-html="wb-stamp">DÉDOUANÉ<br>AMZET</div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="strip-track">
+    <span data-i18n="s-transit">TRANSIT</span><span>·</span><span data-i18n="s-transport">TRANSPORT</span><span>·</span><span data-i18n="s-dedou">DÉDOUANEMENT</span><span>·</span><span data-i18n="s-commerce">COMMERCE GÉNÉRAL</span><span>·</span><span data-i18n="s-import">IMPORT</span><span>·</span><span data-i18n="s-export">EXPORT</span><span>·</span>
+    <span data-i18n="s-transit">TRANSIT</span><span>·</span><span data-i18n="s-transport">TRANSPORT</span><span>·</span><span data-i18n="s-dedou">DÉDOUANEMENT</span><span>·</span><span data-i18n="s-commerce">COMMERCE GÉNÉRAL</span><span>·</span><span data-i18n="s-import">IMPORT</span><span>·</span><span data-i18n="s-export">EXPORT</span><span>·</span>
+  </div>
+</div>
+
+<section class="services" id="services">
+  <div class="section-head">
+    <div class="section-eyebrow" data-i18n="services-eyebrow">Ce que nous faisons</div>
+    <h2 class="section-title" data-i18n="services-title">Une chaîne logistique complète, de A à Z.</h2>
+    <p class="section-desc" data-i18n="services-desc">Chaque étape de votre chaîne d'approvisionnement, prise en charge par une seule équipe qui connaît les procédures, les postes de douane et les routes.</p>
+  </div>
+  <div class="service-list">
+    <div class="service-row">
+      <div class="service-num">01</div>
+      <div class="service-name" data-i18n="svc1-name">Transit</div>
+      <div class="service-desc" data-i18n="svc1-desc">Prise en charge de vos marchandises dès leur arrivée au port ou à l'aéroport, jusqu'à leur acheminement final.</div>
+    </div>
+    <div class="service-row">
+      <div class="service-num">02</div>
+      <div class="service-name" data-i18n="svc2-name">Transport</div>
+      <div class="service-desc" data-i18n="svc2-desc">Camions, conteneurs et véhicules utilitaires pour livrer vos marchandises entre le Cameroun et le Tchad, en toute sécurité.</div>
+    </div>
+    <div class="service-row">
+      <div class="service-num">03</div>
+      <div class="service-name" data-i18n="svc3-name">Dédouanement</div>
+      <div class="service-desc" data-i18n="svc3-desc">Constitution des dossiers, déclarations en douane et suivi des formalités pour éviter les blocages et les retards.</div>
+    </div>
+    <div class="service-row">
+      <div class="service-num">04</div>
+      <div class="service-name" data-i18n="svc4-name">Commerce général</div>
+      <div class="service-desc" data-i18n="svc4-desc">Achat, approvisionnement et négoce de marchandises pour le compte de nos clients, sur mesure.</div>
+    </div>
+    <div class="service-row">
+      <div class="service-num">05</div>
+      <div class="service-name" data-i18n="svc5-name">Import — Export</div>
+      <div class="service-desc" data-i18n="svc5-desc">Organisation complète de vos opérations d'importation et d'exportation, documents et logistique inclus.</div>
+    </div>
+  </div>
+</section>
+
+<section class="corridor" id="corridor">
+  <div class="section-head">
+    <div class="section-eyebrow" data-i18n="corridor-eyebrow">Notre terrain</div>
+    <h2 class="section-title" style="color:var(--paper)" data-i18n="corridor-title">Le corridor Douala – N'Djamena, sur le bout des doigts.</h2>
+    <p class="section-desc" style="color:#cfd3d9" data-i18n="corridor-desc">Du port en eau profonde jusqu'au cœur du Tchad, nous suivons votre cargaison à chaque poste frontière.</p>
+  </div>
+
+  <div class="route-wrap">
+    <div class="route-line">
+      <div class="route-mover">✈</div>
+    </div>
+    <div class="route-stops">
+      <div class="stop">
+        <div class="stop-dot"></div>
+        <div class="stop-label" data-i18n="stop1-label">Douala</div>
+        <div class="stop-sub" data-i18n="stop1-sub">Port · réception</div>
+      </div>
+      <div class="stop">
+        <div class="stop-dot"></div>
+        <div class="stop-label" data-i18n="stop2-label">Frontière Touboro</div>
+        <div class="stop-sub" data-i18n="stop2-sub">Dédouanement</div>
+      </div>
+      <div class="stop">
+        <div class="stop-dot"></div>
+        <div class="stop-label" data-i18n="stop3-label">N'Djamena</div>
+        <div class="stop-sub" data-i18n="stop3-sub">Livraison finale</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="corridor-cols">
+    <div class="corridor-col">
+      <h4 data-i18n="col1-h">Siège social</h4>
+      <p data-i18n="col1-p">Bali — présents auprès des points d'entrée clés du corridor camerouno-tchadien.</p>
+    </div>
+    <div class="corridor-col">
+      <h4 data-i18n="col2-h">Suivi</h4>
+      <p data-i18n="col2-p">Un interlocuteur unique du départ jusqu'à la livraison, joignable par téléphone.</p>
+    </div>
+    <div class="corridor-col">
+      <h4 data-i18n="col3-h">Régularité</h4>
+      <p data-i18n="col3-p">Camions, conteneurs et navettes utilitaires mobilisés selon le volume de votre envoi.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sectors" id="secteurs">
+  <div class="section-head">
+    <div class="section-eyebrow" data-i18n="sectors-eyebrow">Marchandises transportées</div>
+    <h2 class="section-title" data-i18n="sectors-title">Quel que soit votre secteur.</h2>
+  </div>
+  <div class="sector-grid">
+    <div class="sector-card"><span class="tag" data-i18n="sec1-tag">Conteneurs</span><div class="name" data-i18n="sec1-name">Fret maritime</div></div>
+    <div class="sector-card"><span class="tag" data-i18n="sec2-tag">Aérien</span><div class="name" data-i18n="sec2-name">Fret express</div></div>
+    <div class="sector-card"><span class="tag" data-i18n="sec3-tag">Négoce</span><div class="name" data-i18n="sec3-name">Biens de consommation</div></div>
+    <div class="sector-card"><span class="tag" data-i18n="sec4-tag">Chantier</span><div class="name" data-i18n="sec4-name">Matériel & équipements</div></div>
+  </div>
+</section>
+
+<section class="pdg" id="pdg">
+  <div class="section-head">
+    <div class="section-eyebrow" data-i18n="pdg-eyebrow">Direction Général</div>
+    <h2 class="section-title" data-i18n="pdg-title">L'homme derrière chaque dossier.</h2>
+  </div>
+ 
+  <div class="pdg-grid">
+    <div class="pdg-photo-wrap">
+      <img class="pdg-photo" src="pdg-amzet.jpeg" alt="Abdelmadjid Imam, PDG d'AMZET SARL, à son bureau">
+      <div class="pdg-badge">
+        <div class="name" data-i18n="pdg-name">Abdelmadjid Imam</div>
+        <div class="role" data-i18n="pdg-role">PDG AMZET SARL</div>
+</div>
+      <div class="pdg-stats">
+        <div class="pdg-stat"><div class="num">8+</div><div class="lbl" data-i18n="pdg-stat1">Ans dans le transit</div></div>
+        <div class="pdg-stat"><div class="num">2+</div><div class="lbl" data-i18n="pdg-stat2">Ans à la tête d'AMZET SARL</div></div>
+      </div>
+    </div>
+ 
+    <div class="pdg-body">
+      <p data-i18n="pdg-p1">Monsieur Abdelmadjid Imam dirige AMZET SARL depuis sa création, il y a plus de deux ans mais son parcours dans le transit remonte à plus de huit ans. C'est cette expérience du terrain, acquise avant même de fonder l'entreprise, qui structure aujourd'hui la façon dont AMZET SARL travaille.</p>
+ 
+      <p data-i18n="pdg-p2">Sa réputation ne s'est pas construite sur des promesses, mais sur des dossiers menés à terme : des délais tenus, des contrats respectés jusqu'au bout, et des clients qui reviennent parce que la marchandise est arrivée comme convenu. Chaque engagement pris avec un partenaire est honoré c'est la règle qu'il applique à chaque opération, quel que soit le volume ou la complexité du dossier.</p>
+ 
+      <div class="pdg-quote" data-i18n="pdg-quote">« Un client satisfait aujourd'hui, c'est un partenaire pour demain. »</div>
+ 
+      <p data-i18n="pdg-p3">Jeune chef d'entreprise, il reste convaincu que la rigueur professionnelle et le soutien aux autres avancent ensemble. Il consacre une partie de son énergie à encourager et accompagner d'autres jeunes entrepreneurs de sa génération, convaincu que la réussite individuelle a plus de sens lorsqu'elle ouvre la voie à d'autres.</p>
+ 
+      <div class="pdg-principles">
+        <div class="pdg-principle">
+          <h4 data-i18n="pr1-h">Fiabilité</h4>
+          <p data-i18n="pr1-p">Chaque contrat signé est un engagement tenu sans exception.</p>
+        </div>
+        <div class="pdg-principle">
+          <h4 data-i18n="pr2-h">Expérience terrain</h4>
+          <p data-i18n="pr2-p">Huit ans passés à comprendre les procédures, les postes de douane et les imprévus du corridor.</p>
+        </div>
+        <div class="pdg-principle">
+          <h4 data-i18n="pr3-h">Satisfaction client</h4>
+          <p data-i18n="pr3-p">Des dossiers menés jusqu'au bout, pour une clientèle qui reste fidèle.</p>
+        </div>
+        <div class="pdg-principle">
+          <h4 data-i18n="pr4-h">Transmission</h4>
+          <p data-i18n="pr4-p">Un soutien actif aux jeunes entrepreneurs qui, comme lui, se lancent dans les affaires.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="temoignages" id="temoignages">
+  <div class="section-head">
+    <div class="section-eyebrow" style="color:var(--rust)" data-i18n="tem-eyebrow">Ils nous font confiance</div>
+    <h2 class="section-title" data-i18n="tem-title">Ce que disent nos clients.</h2>
+    <p class="section-desc" style="color:#cfd3d9" data-i18n="tem-desc">Des témoignages authentiques, complétés par vos propres avis notés en étoiles.</p>
+    <div class="placeholder-flag" data-i18n="tem-flag">Témoignages sans filtre</div>
+  </div>
+
+  <div class="avis-summary" id="avis-summary">
+    <div class="avis-average-num" id="avis-average">5.0</div>
+    <div>
+      <div class="stars" id="avis-average-stars">★★★★★</div>
+      <div class="avis-average-meta" id="avis-count">3 avis</div>
+    </div>
+  </div>
+
+  <div class="temoignage-grid" id="temoignage-grid">
+    <div class="temoignage-card">
+      <div>
+        <div class="stars small">★★★★★</div>
+        <div class="temoignage-mark">“</div>
+        <p class="temoignage-quote" data-i18n="tem1-quote">Le dossier de dédouanement a été traité rapidement, sans retard à la frontière.</p>
+      </div>
+      <div class="temoignage-who">
+        <div class="temoignage-name">Eric Kapet</div>
+        <div class="temoignage-role" data-i18n="tem1-role">Grossiste des ordinateurs et accessoires informatiques</div>
+      </div>
+    </div>
+    <div class="temoignage-card">
+      <div>
+        <div class="stars small">★★★★★</div>
+        <div class="temoignage-mark">“</div>
+        <p class="temoignage-quote" data-i18n="tem2-quote">Un interlocuteur unique du début à la fin, toujours joignable pour un point sur l'avancement.</p>
+      </div>
+      <div class="temoignage-who">
+        <div class="temoignage-name">Abdelbakit Abdelmadjid</div>
+        <div class="temoignage-role" data-i18n="tem2-role">Grossiste du sel</div>
+      </div>
+    </div>
+    <div class="temoignage-card">
+      <div>
+        <div class="stars small">★★★★★</div>
+        <div class="temoignage-mark">“</div>
+        <p class="temoignage-quote" data-i18n="tem3-quote">Marchandise livrée dans les délais annoncés, comme convenu au départ.</p>
+      </div>
+      <div class="temoignage-who">
+        <div class="temoignage-name">Djibrine Soumaine</div>
+        <div class="temoignage-role" data-i18n="tem3-role">Grossiste des accessoires sons et lumières</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="avis-form">
+    <h3 data-i18n="avis-form-title">Laisser un avis</h3>
+    <div class="form-field">
+      <label data-i18n="avis-name-label">Votre nom</label>
+      <input type="text" id="avis-name-input">
+    </div>
+    <div class="form-field">
+      <label data-i18n="avis-rating-label">Votre note</label><br>
+      <div class="star-input" id="avis-star-input">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+      </div>
+    </div>
+    <div class="form-field">
+      <label data-i18n="avis-comment-label">Votre commentaire</label>
+      <textarea id="avis-comment-input" rows="3"></textarea>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-primary" onclick="publishAvis()" data-i18n="avis-submit">Publier mon avis</button>
+      <button type="button" class="btn btn-wa" onclick="sendAvisWhatsApp()" data-i18n="avis-send-wa">Envoyer aussi par WhatsApp</button>
+    </div>
+    <p class="form-hint" data-i18n="avis-note">Votre avis s'affiche sur cette page pendant votre visite. Pour qu'il nous parvienne aussi directement, utilisez le bouton WhatsApp.</p>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="section-head">
+    <div class="section-eyebrow" data-i18n="faq-eyebrow">Questions fréquentes</div>
+    <h2 class="section-title" data-i18n="faq-title">Ce qu'on nous demande le plus.</h2>
+  </div>
+
+  <div class="faq-list">
+    <details class="faq-item" open>
+      <summary><span class="faq-q" data-i18n="faq1-q">Quels documents faut-il préparer pour le dédouanement ?</span><span class="faq-icon"></span></summary>
+      <div class="faq-a" data-i18n="faq1-a">Facture commerciale, liste de colisage, connaissement (ou lettre de transport), et selon la marchandise, certificat d'origine ou attestation sanitaire. Notre équipe vous confirme la liste exacte selon votre type d'envoi avant l'arrivée de la marchandise.</div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="faq-q" data-i18n="faq2-q">Quel est le délai moyen entre Douala et N'Djamena ?</span><span class="faq-icon"></span></summary>
+      <div class="faq-a" data-i18n="faq2-a">Le délai dépend du volume, du type de marchandise et des formalités à la frontière de Touboro. Nous donnons une estimation précise dès la réception des documents, et nous suivons le dossier jusqu'à la livraison finale.</div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="faq-q" data-i18n="faq3-q">Quelles zones desservez-vous ?</span><span class="faq-icon"></span></summary>
+      <div class="faq-a" data-i18n="faq3-a">Nous opérons principalement sur le corridor Douala (Port Autonome) – Touboro (Frontière) – N'Djamena, avec notre siège social à Bali principalement au Carrefour Jamaïca. Pour toute destination en dehors de cet axe, contactez-nous pour vérifier la faisabilité.</div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="faq-q" data-i18n="faq4-q">Quels types de marchandises transportez-vous ?</span><span class="faq-icon"></span></summary>
+      <div class="faq-a" data-i18n="faq4-a">Fret maritime en conteneurs, fret aérien express, biens de consommation pour le commerce général, ainsi que du matériel et des équipements de chantier de toute catégorie. Chaque type de marchandise a ses propres formalités, que nous gérons au cas par cas.</div>
+    </details>
+    <details class="faq-item">
+      <summary><span class="faq-q" data-i18n="faq5-q">Comment obtenir un devis ?</span><span class="faq-icon"></span></summary>
+      <div class="faq-a" data-i18n="faq5-a">Appelez-nous directement au +237 691 341 211 ou au +235 991 215 88, ou écrivez à abdelmadjidimam28@gmail.com avec le type de marchandise, le volume et le trajet souhaité. Nous répondons avec une estimation rapide.</div>
+    </details>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="section-head">
+    <div class="section-eyebrow" style="color:var(--rust)" data-i18n="contact-eyebrow">Contacts</div>
+    <h2 class="section-title" style="color:var(--paper)" data-i18n="contact-title">Parlons de votre colis à expédier.</h2>
+    <p class="section-desc" style="color:#cfd3d9" data-i18n="contact-desc">Appelez, écrivez, ou passez à l'entreprise, nous répondons toujours vite.</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-line"><span data-i18n="cl-phone-cm">Contact (Cameroun)</span><a href="tel:+237691341211">+237 691 341 211</a></div>
+      <div class="contact-line"><span data-i18n="cl-phone-td">Contact (Tchad)</span><a href="tel:+235991215888">+235 991 215 88</a></div>
+      <div class="contact-line"><span data-i18n="cl-email">E-mail</span><a href="mailto:abdelmadjidimam28@gmail.com">abdelmadjidimam28@gmail.com</a></div>
+      <div class="contact-line"><span data-i18n="cl-siege">Siège social</span><span data-i18n="cl-bali">Bali au Carrefour Jamaïca</span></div>
+    </div>
+    <div class="contact-note">
+      <strong>Amzet Sarl</strong>
+      <span data-i18n="cn-list">Transit · Transport · Dédouanement · Commerce Général · Import · Export.</span><br><br>
+      <span data-i18n="cn-quote">"La Fiabilité et la Sécurité de votre marchandise est notre Priorité..."</span>
+    </div>
+  </div>
+
+  <div class="contact-form-card">
+    <h3 data-i18n="form-title">Décrivez votre besoin</h3>
+    <p class="form-hint" data-i18n="form-hint">Remplissez ce formulaire, puis envoyez-le directement par WhatsApp ou par e-mail. Nous vous répondons rapidement.</p>
+    <div class="form-field">
+      <label data-i18n="form-name">Nom complet</label>
+      <input type="text" id="form-name-input">
+    </div>
+    <div class="form-field">
+      <label data-i18n="form-phone">Téléphone / WhatsApp</label>
+      <input type="text" id="form-phone-input">
+    </div>
+    <div class="form-field">
+      <label data-i18n="form-need">Décrivez votre besoin (marchandise, volume, trajet...)</label>
+      <textarea id="form-need-input" rows="4"></textarea>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-wa" onclick="sendViaWhatsApp()" data-i18n="form-send-wa">Envoyer via WhatsApp</button>
+      <button type="button" class="btn btn-ghost" onclick="sendViaEmail()" data-i18n="form-send-mail">Envoyer par e-mail</button>
+    </div>
+  </div>
+</section>
+
+<footer data-i18n="footer-text">© 2026 AMZET SARL — Transit · Transport · Dédouanement · Commerce Général · Import · Export</footer>
+
+<div class="wa-ring"></div>
+<a class="wa-float" href="https://wa.me/237691341211?text=Bonjour%20AMZET%20SARL%2C%20je%20souhaite%20avoir%20des%20informations." target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.697 4.611 1.902 6.482L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm6.995 16.845c-.297.836-1.47 1.53-2.403 1.73-.639.135-1.474.243-4.284-.92-3.594-1.487-5.906-5.13-6.086-5.367-.173-.238-1.462-1.948-1.462-3.717 0-1.768.928-2.638 1.257-3.001.33-.362.72-.453.96-.453.24 0 .48.002.69.013.221.012.518-.084.81.617.297.716 1.01 2.472 1.098 2.65.088.178.147.386.03.624-.117.237-.176.386-.35.594-.176.208-.37.464-.528.623-.176.176-.36.367-.155.72.206.353.916 1.51 1.966 2.446 1.353 1.207 2.494 1.581 2.847 1.759.353.176.559.148.766-.088.207-.237.883-1.03 1.118-1.383.234-.353.469-.294.79-.176.323.117 2.05.966 2.402 1.142.353.176.588.264.676.412.088.148.088.858-.209 1.693z"/></svg>
+</a>
+
+<script>
+/* ================================================================
+   Option bascule de langue FR / AR (script ajouté uniquement)
+   ================================================================ */
+const I18N_AR = {
+  "nav-services":"الخدمات",
+  "nav-corridor":"الممر",
+  "nav-secteurs":"القطاعات",
+  "nav-pdg":"المدير العام للشركة",
+  "nav-temoignages":"آراء العملاء",
+  "nav-faq":"الأسئلة الشائعة",
+  "nav-contact":"اتصل بنا",
+  "hero-eyebrow":"الكاميرون — تشاد",
+  "hero-title__html":"بضاعتكم<br><em>مُخلَّصة جمركياً</em><br>دون تعقيد.",
+  "hero-sub1":"تتولى شركة AMZET SARL تنظيم عمليات العبور والنقل والتخليص الجمركي لبضائعكم بين الميناء المستقل بدوالا وجمهورية تشاد، وصولاً إلى مستودعكم.",
+  "hero-sub2":"موثوقية وأمان بضاعتكم هما أولويتنا...",
+  "hero-cta1":"اتصل بالوكالة ←",
+  "hero-cta2":"عرض خدماتنا",
+  "wb-title":"بيان الشحن",
+  "wb-transit":"العبور",
+  "wb-transport":"النقل",
+  "wb-dedou":"التخليص الجمركي",
+  "wb-impexp":"استيراد / تصدير",
+  "wb-actif1":"نشط","wb-actif2":"نشط","wb-actif3":"نشط","wb-actif4":"نشط",
+  "wb-stamp__html":"مُخلَّص<br>AMZET",
+  "s-transit":"العبور","s-transport":"النقل","s-dedou":"التخليص الجمركي",
+  "s-commerce":"التجارة العامة","s-import":"الاستيراد","s-export":"التصدير",
+  "services-eyebrow":"ما الذي نقوم به",
+  "services-title":"سلسلة لوجستية متكاملة، من الألف إلى الياء.",
+  "services-desc":"كل مرحلة من سلسلة الإمداد الخاصة بكم يتكفل بها فريق واحد يعرف الإجراءات ومراكز الجمارك والطرق جيداً.",
+  "svc1-name":"العبور",
+  "svc1-desc":"تكفل ببضائعكم فور وصولها إلى الميناء أو المطار، وحتى وصولها النهائي.",
+  "svc2-name":"النقل",
+  "svc2-desc":"شاحنات وحاويات ومركبات نفعية لتوصيل بضائعكم بين الكاميرون وتشاد بكل أمان.",
+  "svc3-name":"التخليص الجمركي",
+  "svc3-desc":"إعداد الملفات والتصاريح الجمركية ومتابعة الإجراءات لتفادي أي تعطيل أو تأخير.",
+  "svc4-name":"التجارة العامة",
+  "svc4-desc":"شراء وتوريد وتجارة البضائع لحساب عملائنا، حسب الطلب.",
+  "svc5-name":"استيراد — تصدير",
+  "svc5-desc":"تنظيم كامل لعمليات الاستيراد والتصدير الخاصة بكم، بما في ذلك الوثائق واللوجستيك.",
+  "corridor-eyebrow":"مجال عملنا",
+  "corridor-title":"ممر دوالا – نجامينا، بين أيديكم.",
+  "corridor-desc":"من الميناء العميق وحتى قلب تشاد، نتابع شحنتكم عند كل نقطة حدودية.",
+  "stop1-label":"دوالا","stop1-sub":"الميناء · الاستلام",
+  "stop2-label":"الحدود · توبورو","stop2-sub":"التخليص الجمركي",
+  "stop3-label":"نجامينا","stop3-sub":"التسليم النهائي",
+  "col1-h":"المقر الاجتماعي",
+  "col1-p":"بالي — حاضرون عند نقاط الدخول الرئيسية لممر الكاميرون–تشاد.",
+  "col2-h":"المتابعة",
+  "col2-p":"جهة اتصال واحدة من الانطلاق وحتى التسليم، يمكن الوصول إليها هاتفياً.",
+  "col3-h":"الانتظام",
+  "col3-p":"شاحنات وحاويات ومركبات نفعية تُعبأ حسب حجم شحنتكم.",
+  "sectors-eyebrow":"البضائع المنقولة",
+  "sectors-title":"مهما كان قطاع نشاطكم.",
+  "sec1-tag":"حاويات","sec1-name":"الشحن البحري",
+  "sec2-tag":"جوي","sec2-name":"الشحن السريع",
+  "sec3-tag":"تجارة","sec3-name":"سلع استهلاكية",
+  "sec4-tag":"ورش","sec4-name":"معدات وتجهيزات",
+  "pdg-eyebrow":"الإدارة العامة",
+  "pdg-title":"الرجل وراء كل ملف.",
+  "pdg-name":"عبد المجيد إمام",
+  "pdg-role":"المدير العام لشركة AMZET SARL",
+  "pdg-stat1":"سنوات في مجال العبور",
+  "pdg-stat2":"سنوات على رأس AMZET SARL",
+  "pdg-p1":"يدير السيد عبد المجيد إمام شركة AMZET SARL منذ تأسيسها قبل أكثر من عامين، إلا أن مسيرته في مجال العبور تمتد لأكثر من ثماني سنوات. وهذه الخبرة الميدانية، المكتسبة قبل تأسيس الشركة نفسها، هي ما يحدد اليوم طريقة عمل AMZET SARL.",
+  "pdg-p2":"لم تُبنَ سمعته على الوعود، بل على ملفات أُنجزت حتى النهاية: مواعيد التزم بها، وعقود احتُرمت بالكامل، وعملاء يعودون لأن بضاعتهم وصلت كما هو متفق عليه. كل التزام يُقطع مع شريك يُحترم بدقة، وهذه هي القاعدة التي يطبقها في كل عملية، مهما كان حجم الملف أو تعقيده.",
+  "pdg-quote":"«العميل الراضي اليوم هو شريك الغد.»",
+  "pdg-p3":"بصفته رائد أعمال شاباً، يبقى مقتنعاً بأن الصرامة المهنية ومساندة الآخرين يسيران معاً. ويكرّس جزءاً من طاقته لتشجيع ومرافقة رواد أعمال شباب آخرين من جيله، إيماناً منه بأن النجاح الفردي يكتسب معنى أعمق حين يفتح الطريق أمام الآخرين.",
+  "pr1-h":"الموثوقية","pr1-p":"كل عقد يُوقَّع هو التزام يُنفَّذ دون استثناء.",
+  "pr2-h":"الخبرة الميدانية","pr2-p":"ثماني سنوات من فهم الإجراءات ومراكز الجمارك والمفاجآت التي يشهدها الممر.",
+  "pr3-h":"رضا العملاء","pr3-p":"ملفات تُنجز حتى النهاية، لعملاء يبقون أوفياء.",
+  "pr4-h":"نقل الخبرة","pr4-p":"دعم فعلي لرواد أعمال شباب يخوضون، مثله، غمار العمل التجاري.",
+  "tem-eyebrow":"يثقون بنا",
+  "tem-title":"ماذا يقول عملاؤنا.",
+  "tem-desc":"شهادات حقيقية، مكمّلة بآرائكم المقيّمة بالنجوم.",
+  "tem-flag":"شهادات دون تنقيح",
+  "tem1-quote":"تمت معالجة ملف التخليص الجمركي بسرعة، دون أي تأخير عند الحدود.",
+  "tem1-role":"تاجر جملة أجهزة الحاسوب وملحقاتها",
+  "tem2-quote":"جهة اتصال واحدة من البداية إلى النهاية، متاحة دائماً لمتابعة سير العمل.",
+  "tem2-role":"تاجر جملة الملح",
+  "tem3-quote":"تم تسليم البضاعة في الموعد المعلن، كما هو متفق عليه من البداية.",
+  "tem3-role":"تاجر جملة معدات الصوت والإضاءة",
+  "avis-form-title":"اترك تقييمك",
+  "avis-name-label":"اسمك",
+  "avis-rating-label":"تقييمك",
+  "avis-comment-label":"تعليقك",
+  "avis-submit":"نشر تقييمي",
+  "avis-send-wa":"إرسال أيضاً عبر واتساب",
+  "avis-note":"يظهر تقييمك في هذه الصفحة أثناء زيارتكم. لإرساله إلينا مباشرة أيضاً، استخدموا زر واتساب.",
+  "faq-eyebrow":"الأسئلة الشائعة",
+  "faq-title":"الأسئلة الأكثر تكراراً.",
+  "faq1-q":"ما هي الوثائق اللازمة للتخليص الجمركي؟",
+  "faq1-a":"الفاتورة التجارية، قائمة التعبئة، سند الشحن (أو وثيقة النقل)، وحسب نوع البضاعة، شهادة المنشأ أو الشهادة الصحية. يؤكد لكم فريقنا القائمة الدقيقة حسب نوع شحنتكم قبل وصول البضاعة.",
+  "faq2-q":"ما هي المدة المتوسطة بين دوالا ونجامينا؟",
+  "faq2-a":"تعتمد المدة على حجم البضاعة ونوعها وعلى إجراءات الحدود في توبورو. نقدّم تقديراً دقيقاً فور استلام الوثائق، ونتابع الملف حتى التسليم النهائي.",
+  "faq3-q":"ما هي المناطق التي تغطونها؟",
+  "faq3-a":"نعمل بشكل أساسي على ممر دوالا (الميناء المستقل) – توبورو (الحدود) – نجامينا، ومقرنا الاجتماعي في بالي، وتحديداً عند ملتقى جامايكا. لأي وجهة خارج هذا المحور، يُرجى الاتصال بنا للتحقق من إمكانية التنفيذ.",
+  "faq4-q":"ما هي أنواع البضائع التي تنقلونها؟",
+  "faq4-a":"الشحن البحري بالحاويات، الشحن الجوي السريع، السلع الاستهلاكية للتجارة العامة، بالإضافة إلى معدات وتجهيزات الورش من جميع الفئات. لكل نوع من البضائع إجراءاته الخاصة، ونتولى إدارتها حسب كل حالة.",
+  "faq5-q":"كيف يمكن الحصول على عرض سعر؟",
+  "faq5-a":"اتصلوا بنا مباشرة على ‎+237 691 341 211‎ أو ‎+235 991 215 88‎، أو راسلونا عبر abdelmadjidimam28@gmail.com مع ذكر نوع البضاعة والحجم والمسار المطلوب. سنرد عليكم بتقدير سريع.",
+  "contact-eyebrow":"اتصل بنا",
+  "contact-title":"لنتحدث عن طردكم المراد شحنه.",
+  "contact-desc":"اتصلوا، راسلونا، أو زورونا في الشركة، نرد دائماً بسرعة.",
+  "cl-phone-cm":"التواصل (الكاميرون)",
+  "cl-phone-td":"التواصل (تشاد)",
+  "cl-email":"البريد الإلكتروني",
+  "cl-siege":"المقر الاجتماعي",
+  "cl-bali":"بالي - ملتقى جامايكا",
+  "cn-list":"عبور · نقل · تخليص جمركي · تجارة عامة · استيراد · تصدير.",
+  "cn-quote":"«موثوقية وأمان بضاعتكم هما أولويتنا...»",
+  "form-title":"صف احتياجك",
+  "form-hint":"املأوا هذا النموذج ثم أرسلوه مباشرة عبر واتساب أو البريد الإلكتروني. سنرد عليكم بسرعة.",
+  "form-name":"الاسم الكامل",
+  "form-phone":"الهاتف / واتساب",
+  "form-need":"صف احتياجك (البضاعة، الحجم، المسار...)",
+  "form-send-wa":"إرسال عبر واتساب",
+  "form-send-mail":"إرسال بالبريد الإلكتروني",
+  "footer-text":"© 2026 AMZET SARL — عبور · نقل · تخليص جمركي · تجارة عامة · استيراد · تصدير"
+};
+
+const DYN = {
+  fr: { countSuffix:" avis", alertMissing:"Merci de renseigner votre nom, votre commentaire et une note en étoiles.", dateLocale:"fr-FR", genericRole:"Client AMZET SARL" },
+  ar: { countSuffix:" تقييم", alertMissing:"يرجى إدخال الاسم والتعليق واختيار عدد النجوم.", dateLocale:"ar", genericRole:"عميل AMZET SARL" }
+};
+let currentLang = 'fr';
+const avisSeedCount = 3;
+const avisSeedTotal = 15;
+let avisData = [];
+let avisRating = 0;
+
+const originals = {};
+document.querySelectorAll('[data-i18n]').forEach(function(el){
+  const key = el.getAttribute('data-i18n');
+  if(!(key in originals)) originals[key] = el.textContent;
+});
+document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+  const key = el.getAttribute('data-i18n-html');
+  if(!((key+'__html') in originals)) originals[key+'__html'] = el.innerHTML;
+});
+
+function setLang(lang){
+  const html = document.documentElement;
+  html.lang = lang;
+  html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.getElementById('btn-fr').classList.toggle('active', lang==='fr');
+  document.getElementById('btn-ar').classList.toggle('active', lang==='ar');
+  currentLang = lang;
+
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    const key = el.getAttribute('data-i18n');
+    el.textContent = (lang==='ar' && I18N_AR[key]) ? I18N_AR[key] : originals[key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    const key = el.getAttribute('data-i18n-html');
+    const arKey = key + '__html';
+    el.innerHTML = (lang==='ar' && I18N_AR[arKey]) ? I18N_AR[arKey] : originals[arKey];
+  });
+
+  renderAvisSummary();
+}
+
+/* ================================================================
+   Fusion Témoignages + Avis clients (étoiles + commentaires)
+   et formulaire de contact WhatsApp / e-mail (ajouté uniquement)
+   ================================================================ */
+document.querySelectorAll('#avis-star-input .star').forEach(function(el){
+  el.addEventListener('click', function(){
+    avisRating = parseInt(el.getAttribute('data-value'), 10);
+    document.querySelectorAll('#avis-star-input .star').forEach(function(s){
+      s.classList.toggle('filled', parseInt(s.getAttribute('data-value'), 10) <= avisRating);
+    });
+  });
+});
+
+function renderAvisSummary(){
+  const totalCount = avisSeedCount + avisData.length;
+  const totalStars = avisSeedTotal + avisData.reduce(function(a,b){ return a + b.rating; }, 0);
+  const avg = totalStars / totalCount;
+  document.getElementById('avis-average').textContent = avg.toFixed(1);
+  document.getElementById('avis-average-stars').textContent = '★'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+  document.getElementById('avis-count').textContent = totalCount + DYN[currentLang].countSuffix;
+}
+renderAvisSummary();
+
+function appendAvisCard(r){
+  const grid = document.getElementById('temoignage-grid');
+  const card = document.createElement('div');
+  card.className = 'temoignage-card';
+
+  const top = document.createElement('div');
+  const starsDiv = document.createElement('div');
+  starsDiv.className = 'stars small';
+  starsDiv.textContent = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+  const mark = document.createElement('div');
+  mark.className = 'temoignage-mark';
+  mark.textContent = '“';
+  const quote = document.createElement('p');
+  quote.className = 'temoignage-quote';
+  quote.textContent = r.comment;
+  top.appendChild(starsDiv);
+  top.appendChild(mark);
+  top.appendChild(quote);
+
+  const who = document.createElement('div');
+  who.className = 'temoignage-who';
+  const nameDiv = document.createElement('div');
+  nameDiv.className = 'temoignage-name';
+  nameDiv.textContent = r.name;
+  const roleDiv = document.createElement('div');
+  roleDiv.className = 'temoignage-role';
+  roleDiv.textContent = DYN[currentLang].genericRole;
+  who.appendChild(nameDiv);
+  who.appendChild(roleDiv);
+
+  card.appendChild(top);
+  card.appendChild(who);
+  grid.insertBefore(card, grid.firstChild);
+}
+
+function publishAvis(){
+  const nameInput = document.getElementById('avis-name-input');
+  const commentInput = document.getElementById('avis-comment-input');
+  const name = nameInput.value.trim();
+  const comment = commentInput.value.trim();
+  if(!name || !comment || avisRating === 0){
+    alert(DYN[currentLang].alertMissing);
+    return;
+  }
+  avisData.unshift({name:name, rating:avisRating, comment:comment});
+  appendAvisCard({name:name, rating:avisRating, comment:comment});
+  renderAvisSummary();
+  nameInput.value = '';
+  commentInput.value = '';
+  avisRating = 0;
+  document.querySelectorAll('#avis-star-input .star').forEach(function(s){ s.classList.remove('filled'); });
+}
+
+function sendAvisWhatsApp(){
+  const name = document.getElementById('avis-name-input').value.trim();
+  const comment = document.getElementById('avis-comment-input').value.trim();
+  const stars = avisRating > 0 ? avisRating : '?';
+  const text = 'Avis client AMZET SARL\nNom: ' + name + '\nNote: ' + stars + '/5\nCommentaire: ' + comment;
+  window.open('https://wa.me/237691341211?text=' + encodeURIComponent(text), '_blank');
+}
+
+function sendViaWhatsApp(){
+  const name = document.getElementById('form-name-input').value.trim();
+  const phone = document.getElementById('form-phone-input').value.trim();
+  const need = document.getElementById('form-need-input').value.trim();
+  const text = 'Bonjour AMZET SARL,\nNom: ' + name + '\nTéléphone: ' + phone + '\nBesoin: ' + need;
+  window.open('https://wa.me/237691341211?text=' + encodeURIComponent(text), '_blank');
+}
+
+function sendViaEmail(){
+  const name = document.getElementById('form-name-input').value.trim();
+  const phone = document.getElementById('form-phone-input').value.trim();
+  const need = document.getElementById('form-need-input').value.trim();
+  const subject = encodeURIComponent('Demande de devis - ' + name);
+  const body = encodeURIComponent('Nom: ' + name + '\nTéléphone: ' + phone + '\nBesoin:\n' + need);
+  window.location.href = 'mailto:abdelmadjidimam28@gmail.com?subject=' + subject + '&body=' + body;
+}
+</script>
+
+</body>
+</html>
