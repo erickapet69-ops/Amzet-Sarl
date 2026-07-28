@@ -433,6 +433,35 @@
   html[dir="rtl"] .avis-average-meta,
   html[dir="rtl"] .form-hint{ font-family:'IBM Plex Sans Arabic', sans-serif; letter-spacing:0 !important; text-transform:none !important; }
   html[dir="rtl"] .form-field input, html[dir="rtl"] .form-field textarea{ font-family:'IBM Plex Sans Arabic', sans-serif; }
+
+  /* ================================================================
+     AJOUT — Avant-propos (bloc ajouté uniquement)
+     ================================================================ */
+  .avant-propos{ background:var(--paper); }
+  .ap-wrap{ max-width:760px; margin:0 auto; }
+  .ap-ornament{ display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:12px; }
+  .ap-ornament .ap-line{ height:1px; width:60px; background:var(--rust); }
+  .ap-ornament .ap-dot{ width:6px; height:6px; border-radius:50%; background:var(--rust); flex:none; }
+  .ap-eyebrow{
+    text-align:center; font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.22em;
+    text-transform:uppercase; color:var(--rust); margin-bottom:56px;
+  }
+  .ap-text p{ font-size:17px; line-height:1.9; color:var(--ink); margin-bottom:24px; }
+  .ap-text p:first-of-type::first-letter{
+    font-family:'Big Shoulders Display'; font-size:64px; font-weight:900; color:var(--rust);
+    float:left; line-height:0.8; padding-right:12px; padding-top:8px;
+  }
+  .ap-signature{ margin-top:56px; text-align:right; }
+  .ap-signature .sig-line{ width:120px; height:1px; background:var(--rust); margin-left:auto; margin-bottom:16px; }
+  .ap-signature .sig-name{ font-family:'Big Shoulders Display'; text-transform:uppercase; font-weight:800; font-size:19px; color:var(--navy); }
+  .ap-signature .sig-role{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-top:6px; }
+
+  html[dir="rtl"] .ap-eyebrow{ font-family:'IBM Plex Sans Arabic', sans-serif; letter-spacing:0 !important; text-transform:none !important; }
+  html[dir="rtl"] .ap-text p:first-of-type::first-letter{ float:right; padding-left:12px; padding-right:0; font-family:'Noto Kufi Arabic', sans-serif; }
+  html[dir="rtl"] .ap-signature{ text-align:left; }
+  html[dir="rtl"] .ap-signature .sig-line{ margin-left:0; margin-right:auto; }
+  html[dir="rtl"] .ap-signature .sig-name{ font-family:'Noto Kufi Arabic', sans-serif; letter-spacing:0 !important; text-transform:none !important; }
+  html[dir="rtl"] .ap-signature .sig-role{ font-family:'IBM Plex Sans Arabic', sans-serif; letter-spacing:0 !important; text-transform:none !important; }
 </style>
 </head>
 <body>
@@ -440,6 +469,7 @@
 <nav>
   <div class="nav-mark"><span class="dot"></span>AMZET SARL</div>
   <div class="nav-links">
+    <a href="#avant-propos" data-i18n="nav-ap">Avant-propos</a>
     <a href="#services" data-i18n="nav-services">Services</a>
     <a href="#corridor" data-i18n="nav-corridor">Corridor</a>
     <a href="#secteurs" data-i18n="nav-secteurs">Secteurs</a>
@@ -484,6 +514,23 @@
     <span data-i18n="s-transit">TRANSIT</span><span>·</span><span data-i18n="s-transport">TRANSPORT</span><span>·</span><span data-i18n="s-dedou">DÉDOUANEMENT</span><span>·</span><span data-i18n="s-commerce">COMMERCE GÉNÉRAL</span><span>·</span><span data-i18n="s-import">IMPORT</span><span>·</span><span data-i18n="s-export">EXPORT</span><span>·</span>
   </div>
 </div>
+
+<section class="avant-propos" id="avant-propos">
+  <div class="ap-wrap">
+    <div class="ap-ornament"><span class="ap-line"></span><span class="ap-dot"></span><span class="ap-line"></span></div>
+    <div class="ap-eyebrow" data-i18n="ap-eyebrow">Avant-propos</div>
+    <div class="ap-text">
+      <p data-i18n="ap-p1">Depuis sa création, AMZET SARL s'est fixé un seul objectif : faire de chaque expédition une opération maîtrisée, du premier document à la livraison finale. Le transit, le transport et le dédouanement ne tolèrent aucune approximation — c'est pourquoi nous avons construit notre entreprise sur des principes simples mais non négociables : la rigueur dans l'exécution, la transparence envers nos clients, et le respect scrupuleux des délais annoncés.</p>
+      <p data-i18n="ap-p2">Le corridor qui relie le Port Autonome de Douala à N'Djamena est exigeant. Il traverse des frontières, des procédures changeantes, des imprévus logistiques. Y opérer avec constance demande une organisation solide et une équipe qui connaît le terrain aussi bien que les textes. C'est cette exigence que nous plaçons au cœur de chaque dossier, quelle que soit sa taille.</p>
+      <p data-i18n="ap-p3">Nous croyons qu'une entreprise de transit et de logistique se juge non pas à ses promesses, mais à la régularité de ses résultats. C'est dans cet esprit que nous continuons de servir nos clients, jour après jour, avec la même discipline qu'au premier jour.</p>
+    </div>
+    <div class="ap-signature">
+      <div class="sig-line"></div>
+      <div class="sig-name" data-i18n="ap-sig-name">Abdelmadjid Imam</div>
+      <div class="sig-role" data-i18n="ap-sig-role">Président Directeur Général, AMZET SARL</div>
+    </div>
+  </div>
+</section>
 
 <section class="services" id="services">
   <div class="section-head">
@@ -795,6 +842,13 @@
    ================================================================ */
 const I18N_AR = {
   "nav-services":"الخدمات",
+  "nav-ap":"كلمة افتتاحية",
+  "ap-eyebrow":"كلمة افتتاحية",
+  "ap-p1":"منذ تأسيسها، حددت شركة AMZET SARL لنفسها هدفاً واحداً: أن تكون كل عملية شحن عملية محكمة، من أول وثيقة وحتى التسليم النهائي. لا تحتمل أعمال العبور والنقل والتخليص الجمركي أي تهاون أو تقريب - لهذا بنينا شركتنا على مبادئ بسيطة لكنها غير قابلة للتفاوض: الدقة في التنفيذ، والشفافية مع عملائنا، والالتزام الصارم بالمواعيد المعلنة.",
+  "ap-p2":"الممر الرابط بين الميناء المستقل بدوالا ونجامينا ممر صعب. يعبر حدوداً وإجراءات متغيرة ومفاجآت لوجستية. والعمل فيه بانتظام يتطلب تنظيماً متيناً وفريقاً يعرف الميدان كما يعرف النصوص. وهذا هو المطلب الذي نضعه في صميم كل ملف، مهما كان حجمه.",
+  "ap-p3":"نحن نؤمن بأن شركة العبور واللوجستيك لا تُقاس بوعودها، بل بانتظام نتائجها. وبهذه الروح نواصل خدمة عملائنا، يوماً بعد يوم، بنفس الانضباط الذي بدأنا به.",
+  "ap-sig-name":"عبد المجيد إمام",
+  "ap-sig-role":"الرئيس المدير العام لشركة AMZET SARL",
   "nav-corridor":"الممر",
   "nav-secteurs":"القطاعات",
   "nav-pdg":"المدير العام للشركة",
